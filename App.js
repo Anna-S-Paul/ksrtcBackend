@@ -64,7 +64,23 @@ app.post("/signin", (req, res) => {
 
 })
 
-
+app.post("/view",(req,res)=>{
+    let token=req.headers["token"]
+    jwt.verify(token,"ksrtc-app",(error,decoded)=>{
+        if (error) {
+            res.json({"status":"unauthorised access"})
+        } else {
+            if(decoded)
+                {
+                    ksrtcmodel.find().then(
+                        (response)=>{
+                            res.json(response)
+                        }
+                    ).catch()
+                }
+        }
+    })
+})
 app.listen(8077, () => {
     console.log("server started")
 })
